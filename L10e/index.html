@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Images</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #333;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rebeccapurple;
+            width: 50%;
+            margin: auto;
+        }
+        input {
+            margin: 10px;
+        }
+        .preview-container img {
+            width: 150px;
+            height: auto;
+            margin: 5px;
+            border: 2px solid #ddd;
+            padding: 5px;
+        }
+        #response {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Upload Multiple Images</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageInput" name="images" multiple required />
+        <button type="submit">Upload</button>
+    </form>
+
+    <div class="preview-container" id="previewContainer"></div>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById("imageInput").addEventListener("change", function(event) {
+            let previewContainer = document.getElementById("previewContainer");
+            previewContainer.innerHTML = "";  // Clear previous images
+
+            for (let file of event.target.files) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let img = document.createElement("img");
+                    img.src = e.target.result;
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let formData = new FormData();
+            let files = document.getElementById("imageInput").files;
+
+            if (files.length === 0) {
+                alert("Please select at least one file.");
+                return;
+            }
+
+            for (let file of files) {
+                formData.append("images", file);
+            }
+
+            try {
+                let response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result = await response.json();
+                document.getElementById("response").innerText = result.message;
+
+                // Display uploaded image links
+                if (result.files) {
+                    let previewContainer = document.getElementById("previewContainer");
+                    result.files.forEach(file => {
+                        let img = document.createElement("img");
+                        img.src = file.fileUrl;
+                        previewContainer.appendChild(img);
+                    });
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById("response").innerText = "Upload failed!";
+                document.getElementById("response").style.color = "red";
+            }
+        });
+    </script>
+
+</body>
+</html>
