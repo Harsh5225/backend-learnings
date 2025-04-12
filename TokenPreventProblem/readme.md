@@ -57,5 +57,6 @@ To solve this, we can use **Redis as a blacklist** to track tokens that should n
 ## 📊 Visual Diagram
 
 Let me show you a simple diagram to explain the flow visually:
+[VisualFlow](https://github.com/Harsh5225/backend-learnings/blob/main/images/Flowcontroltoken.png)
 
 Let's generate that now.
