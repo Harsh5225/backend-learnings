@@ -200,7 +200,14 @@ query {
 - 📡 GraphQL API Structure
 - 🧰 Clean Codebase with Controllers, Configs, Utils
 
+
+
+![Prevent Token Flow and Redis](https://github.com/Harsh5225/backend-learnings/blob/main/images/Flowcontroltoken.png)
 ---
+
+
+
+
 
 ## 🔮 Future Scope
 
@@ -210,5 +217,7 @@ query {
 - 📈 Monitoring with Prometheus/Grafana
 - 📦 Docker and Kubernetes integration
 - 🧪 Tests with Jest + Supertest
+
+- 
 
 ---
